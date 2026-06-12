@@ -1,0 +1,81 @@
+.inventory-counter {
+  --inventory-counter-surface: #fff4f4;
+  --inventory-counter-border: rgba(142, 31, 31, 0.16);
+  --inventory-counter-track: rgba(142, 31, 31, 0.12);
+  box-sizing: border-box;
+  width: 100%;
+  margin-block: 0.75rem 0;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--inventory-counter-border);
+  border-radius: 0.5rem;
+  background: var(--inventory-counter-background, var(--inventory-counter-surface));
+  color: var(--inventory-counter-text, #8e1f1f);
+  font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
+.inventory-counter[hidden],
+.inventory-counter.inventory-counter--hidden {
+  display: none;
+}
+
+.inventory-counter__message {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.inventory-counter__pulse {
+  position: relative;
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--inventory-counter-warning, #d72c0d);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--inventory-counter-warning, #d72c0d) 45%, transparent);
+  animation: inventory-counter-breathe 1.6s ease-out infinite;
+}
+
+.inventory-counter__track {
+  height: 0.25rem;
+  margin-top: 0.625rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--inventory-counter-track);
+}
+
+.inventory-counter__fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--inventory-counter-fill, #d72c0d);
+  transform-origin: left center;
+  transition: width 320ms ease;
+}
+
+@keyframes inventory-counter-breathe {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--inventory-counter-warning, #d72c0d) 45%, transparent);
+    transform: scale(0.9);
+  }
+
+  70%,
+  100% {
+    box-shadow: 0 0 0 0.5rem transparent;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inventory-counter__pulse {
+    animation: none;
+  }
+
+  .inventory-counter__fill {
+    transition: none;
+  }
+}
