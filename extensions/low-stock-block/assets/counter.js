@@ -110,9 +110,10 @@
       }
 
       const tracked = Boolean(variant.inventory_management);
+      const infinite = variant.inventory_policy === 'continue';
       const inventory = Number(variant.inventory_quantity);
 
-      if (!tracked || !Number.isFinite(inventory)) {
+      if (!tracked || infinite || !Number.isFinite(inventory)) {
         simulate(variant);
       } else {
         stopSimulation();
@@ -126,7 +127,17 @@
     return instance;
   };
 
-  const refresh = () => document.querySelectorAll(selector).forEach(createInstance);
+  const refresh = () => {
+    instances.forEach((instance, root) => {
+      if (!root.isConnected) {
+        instance.destroy();
+        instances.delete(root);
+      }
+    });
+
+    document.querySelectorAll(selector).forEach(createInstance);
+  };
+
   const updateAll = (event) => instances.forEach((instance) => instance.update(event));
 
   variantEvents.forEach((eventName) => document.addEventListener(eventName, updateAll));
